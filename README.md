@@ -6,6 +6,14 @@ My original desire was to create a ball tracker application for Apple products u
 
 Instead, I started from scratch to try to develop the algorithms necessary to implement this application.  Initial testing has been performed on videos of golf putting, since that was one of the simpler cases.  
 
+
+## TODO List:
+
+1. Still need to perfect the algorithm implementation. One hanging issue is increasing the bounding box size greater than the Kalman filter size seems to throw off results.  I think this may be a coding error where there is some dependency on the bounding box size I am not seeing which is shifting my center point calculations.
+
+2. Rehost back in to an iPhone. 
+
+
 ## Algorithms
 Several algorithms and some glue logic/state management are required for the core object tracking:
 
