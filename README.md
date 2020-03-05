@@ -31,7 +31,15 @@ Target re-aquired based on the Kalman filter prediction during full occlusion.
 
 1. Still need to perfect the algorithm implementation. One hanging issue is increasing the bounding box size greater than the Kalman filter size seems to throw off results.  I think this may be a coding error where there is some dependency on the bounding box size I am not seeing which is shifting my center point calculations.
 
-2. Rehost back in to an iPhone. 
+2. I think the Kalman filter paramaters overfitted to my test scenarios.  I have done some limited experimentation with it, but I think a better implementation would be to change the coefficients in the state update, process noise, and measurement noise matricees during occlusion.  Ideas here include:
+
+Changing the weights applied to acceleration and jerk during full occlusion (extended occlusion is causing the motion to reverse due to deceleration previously measured).  
+
+Increasing measurement noise during partial occlusion.  Can use the estimated difference between the Kalman prediction and measured values to inform the measurement noise (although this could be self-reinforcing and runaway).
+
+3. Would be interesting to train a CNN to do the object detection.
+
+4. Rehost back in to an iPhone. 
 
 
 ## Algorithms
