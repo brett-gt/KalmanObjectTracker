@@ -8,15 +8,21 @@ Instead, I started from scratch to try to develop the algorithms necessary to im
 
 ## Current Results
 
-Inline-style: 
+In the below pictures, the blue box is the current frame's detected object bounding box, the black box is the subframe for which the algorithm is looking for the object (guided by the Kalman filter predictions), and the red dot is the Kalman filter predicted center of the object.  
+
+Initial lock of the target, no movement.
 ![Static Lock](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Results/3_4_20/track1.jpg "Static Lock")
 
+Kalman filter tracking of the object after initial movement.
 ![Static Lock](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Results/3_4_20/track2.jpg "Initial Motion Capture")
 
+Partial occlusion occuring.  Note the occlusion handling is predicting the actual size of the target and not just the visible region.
 ![Static Lock](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Results/3_4_20/track3.jpg "Partial Occlusion")
 
+Full occlusion occuring.  Kalman filter is now predicting the targets motion even though it is hidden.
 ![Static Lock](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Results/3_4_20/track4.jpg "Full Occlusion")
 
+Target re-aquired based on the Kalman filter prediction during full occlusion.
 ![Static Lock](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Results/3_4_20/track5.jpg "Reaquired Motion Capture")
 
 
