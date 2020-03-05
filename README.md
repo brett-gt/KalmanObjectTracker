@@ -6,6 +6,20 @@ My original desire was to create a ball tracker application for Apple products u
 
 Instead, I started from scratch to try to develop the algorithms necessary to implement this application.  Initial testing has been performed on videos of golf putting, since that was one of the simpler cases.  
 
+## Current Results
+
+Inline-style: 
+![Static Lock](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Results/3_4_20/track1.jpg "Static Lock")
+
+![Static Lock](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Results/3_4_20/track2.jpg "Initial Motion Capture")
+
+![Static Lock](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Results/3_4_20/track3.jpg "Partial Occlusion")
+
+![Static Lock](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Results/3_4_20/track4.jpg "Full Occlusion")
+
+![Static Lock](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Results/3_4_20/track5.jpg "Reaquired Motion Capture")
+
+
 
 ## TODO List:
 
