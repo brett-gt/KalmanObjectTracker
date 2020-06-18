@@ -10,7 +10,12 @@ To maximize performance of the Kalman filter, there are several parameters that 
 ## System Transition Matrix
 The state transition matrix (usually denoted as "A" or "Fk" in literature) describes the dynamics of the system.  Applied to modeling motion, the state transition matrix encodes the kinematic equations that describe an object's motion.  Typically, one of two options are used: constant velocity or constant acceleration.
 
+## Process Noise
+Process noise describes uncertainty associated with the state model.  Uncertainty in the state model could be due changes in the system over time, unknown state variables not included in the model, and outside influences that aren't incorporated in the model.  
+
+To get a feel for the impacts of process noise, lets apply the Kalman filter to a ramp function.
 
 
-TODO:
+
+# TODO:
 Clean up formulas
