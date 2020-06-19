@@ -32,7 +32,7 @@ As expected, both error and velocity converge even faster.
 
 So why wouldn't we just set Q as high as possible?  Noise.  The above example is free of noise.  What happens if we add noise?
 
-Starting back with Q = [1 0][0 1] and plotting only position to get a better view:
+Starting back with Q = [1 0][0 1] and plotting only position to get a better view (blue is true function, red is noise added):
 ![Ramp Noise 1 1](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Process_Noise_1_1_w_noise.JPG)]
 
 For something called a Kalman "filter" we aren't getting much filtering of the noise.  We don't quite hit the peaks of the noise, but it clearly follows the noise.  What impact does increasing the velocity noise coefficient have?  Let us go back and try Q = [1 0][0 100]:
