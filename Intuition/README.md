@@ -46,7 +46,7 @@ What do we do?  What if we told the Kalman filter to trust our models position m
 
 We can see notable filtering.  The noise still has an impact, but the effects are visibily muted.  Lets crank the velocity noise back up to make sure nothing bad happens.  Trying Q = [0.1 0][0 100]:
 
-![Ramp Noise p1 100](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Process_Noise_p1_1_w_noise.JPG)]
+![Ramp Noise p1 100](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Process_Noise_p1_100_w_noise.JPG)]
 
 Ouch... seems like we are back to where we started, not a whole lot of filtering going on.  The problem is that now the model is picking up on the velocity of the noise more and using it to predict the model position.  So even though we are trusting the model prediction more, the model prediction is now following the noise more closely.
 
