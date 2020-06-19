@@ -77,9 +77,9 @@ For the object tracking application, our primary interest in an accurate state m
 
 A few captures with Q = [1 0][0 100] and R = [1].  In these captures, occlusion starts at time 2 and goes until time 3.  
 
-![Occlusion Down](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Occlusion_Down.jpg)]
+![Occlusion Down](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Occlusion_Down.JPG)]
 
-![Occlusion Up](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Occlusion_Up.jpg)]
+![Occlusion Up](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Occlusion_Up.JPG)]
 
 What do we notice?  The first thing is that at that when occlusion starts, the noise goes away in the prediction.  This makes sense, because the Kalman filter is simply using its guess at velocity to propograte position into the future.  
 
