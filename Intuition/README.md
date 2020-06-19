@@ -61,6 +61,31 @@ For detecting changes in the underlying system state, the position noise value d
 When we add noise, we want to Kalman filter to trust its state model more because this is what leads to filtering.  Now, position noise does matter more.  A high position noise in the process noise matrix tells the Kalman filter not to trust the  model, causing the Kalman filter to latch on and follow the noise.  Instead, we want a lower position noise value so that the Kalman filter trusts our model more than individual measurements.  However, if we set the velocity noise in the process noise matrix to high the Kalman filter state model starts following the noise.
 
 
+## Measurement Noise
+The other parameter we can vary is measurement noise (R).  Typically, this value is known or estimatable prior to implementation.  For example, if we were implementing a guidance system we would know the accuracy and drift associates with GPS, intertial sensors, accelerometers.  Without the presence of noise, measurement noise does not have that much effect.  Below is a capture of Q = [1 0][0 100] with R = [1] (same as a previous example) and then the same Q with R = [100].
+
+![Meas Noise 1](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Meas_Noise_1.JPG)]
+
+![Meas Noise 100](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Meas_Noise_100.JPG)]
+
+You can see in the case of increased measurement noise that we are stretching back out the time it takes to learn the velocity.  By increasing measurement noise, we are telling the Kalman filter to trust the measurements less leading it to learn the state slower.  
+
+
+## Occlusion
+
+For the object tracking application, our primary interest in an accurate state model is in the case that we lose sight of the tracked object for a period of time.  In this case, we want to use the Kalman filter to predict where the object will be when it reappears.  Another application for object tracking is for tagging multiple objects that interesect each other.  We can use the Kalman filter predictiosn to maintain the tagging through the intersection.  The way accomplish this by allowing Kalman filter to continue making predictions and then use those predicitons as if they were measurements (allowing the filter to keep propograting into the future).
+
+A few captures with Q = [1 0][0 100] and R = [1].  In these captures, occlusion starts at time 2 and goes until time 3.  
+
+![Occlusion Down](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Occlusion_Down.jpg)]
+
+![Occlusion Up](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Occlusion_Up.jpg)]
+
+What do we notice?  The first thing is that at that when occlusion starts, the noise goes away in the prediction.  This makes sense, because the Kalman filter is simply using its guess at velocity to propograte position into the future.  
+
+The second thing is that in one capture our prediction undershoots truth and on the other capture our prediction overshoots truth.  Why is that?  Look at how noise was impacting velocity in the two captures.  In the undershoot case, the noise was causing truth to seem to "decrease" right before time 2 when occlusion started.  In the overshoot case, the noise was causing truth to seem to "increase" right before time 2 when occlusion started.  Since we have the velocity noise in our state model set high, the Kalman filter trusts the last measurement it saw before occlusion more than it should.  Since there was noise on that measurement, the noise affected our ability to accurately predict into the future.  Since the noise is random, we can't predict exactly what affect it might have.  
+
+
 ## Varying State in the Kalman Filter
 
 We can break our specific application down into a few distinct stages: acquisiton and following.
