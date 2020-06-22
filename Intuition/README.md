@@ -21,32 +21,32 @@ In the first case, we use process noise Q = [1 0][0 1].  The result is shown bel
 If you only looked at position, it looks like the Kalman filter starts off lagging truth by one time step and is slowly catching up.  Digging in further we can look at the bottom graph and see the issue: the Kalman filter is very slowly learning the velocity.  Now think back to the process noise values we are using.  We are setting the position noise and velocity noise to 1 (a relatively small value considering we move from 0 - 200 in a few seconds). By setting the noise low, we are telling the Kalman filter to trust the model values they have which means don't change your mind (i.e. learn) very fast.  
 
 Lets try increasing the velocity noise such that Q = [1 0][0 10].  The result is shown below:
-![Ramp 1 10](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Process_Noise_1_10.JPG)]
+![Ramp 1 10](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Process_Noise_1_10.JPG)
 
 Compared with the previous value, both error and velocity are converging to their expected value much faster.  By telling the Kalman filter that there is a lot of noise with the velocity part of the model, we tell it to trust new measurements faster and therefore learn the true velocity quicker.  
 
 If we go even more extreme, we can set the velocity noise such that Q = [1 0][0 100].  The result is shown below:
-![Ramp 1 100](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Process_Noise_1_100.JPG)]
+![Ramp 1 100](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Process_Noise_1_100.JPG)
 
 As expected, both error and velocity converge even faster.  
 
 So why wouldn't we just set Q as high as possible?  Noise.  The above example is free of noise.  What happens if we add noise?
 
 Starting back with Q = [1 0][0 1] and plotting only position to get a better view (blue is true function, red is noise added):
-![Ramp Noise 1 1](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Process_Noise_1_1_w_noise.JPG)]
+![Ramp Noise 1 1](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Process_Noise_1_1_w_noise.JPG)
 
 For something called a Kalman "filter" we aren't getting much filtering of the noise.  We don't quite hit the peaks of the noise, but it clearly follows the noise.  What impact does increasing the velocity noise coefficient have?  Let us go back and try Q = [1 0][0 100]:
-![Ramp Noise 1 100](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Process_Noise_1_100_w_noise.JPG)]
+![Ramp Noise 1 100](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Process_Noise_1_100_w_noise.JPG)
 
 Slightly worse, but not much different.  We told the Kalman filter not to trust our internal state velocity as much, so it picks up velocity from the noise and hits peak noise slightly more.
 
 What do we do?  What if we told the Kalman filter to trust our models position more?  We can do this by decreasing the position noise in the state matrix.  Trying Q = [0.1 0][0 1]:
 
-![Ramp Noise p1 1](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Process_Noise_p1_1_w_noise.JPG)]
+![Ramp Noise p1 1](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Process_Noise_p1_1_w_noise.JPG)
 
 We can see notable filtering.  The noise still has an impact, but the effects are visibily muted.  Lets crank the velocity noise back up to make sure nothing bad happens.  Trying Q = [0.1 0][0 100]:
 
-![Ramp Noise p1 100](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Process_Noise_p1_100_w_noise.JPG)]
+![Ramp Noise p1 100](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Process_Noise_p1_100_w_noise.JPG)
 
 Ouch... seems like we are back to where we started, not a whole lot of filtering going on.  The problem is that now the model is picking up on the velocity of the noise more and using it to predict the model position.  So even though we are trusting the model prediction more, the model prediction is now following the noise more closely.
 
@@ -64,9 +64,9 @@ When we add noise, we want to Kalman filter to trust its state model more becaus
 ## Measurement Noise
 The other parameter we can vary is measurement noise (R).  Typically, this value is known or estimatable prior to implementation.  For example, if we were implementing a guidance system we would know the accuracy and drift associates with GPS, intertial sensors, accelerometers.  Without the presence of noise, measurement noise does not have that much effect.  Below is a capture of Q = [1 0][0 100] with R = [1] (same as a previous example) and then the same Q with R = [100].
 
-![Meas Noise 1](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Meas_Noise_1.JPG)]
+![Meas Noise 1](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Meas_Noise_1.JPG)
 
-![Meas Noise 100](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Meas_Noise_100.JPG)]
+![Meas Noise 100](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Meas_Noise_100.JPG)
 
 You can see in the case of increased measurement noise that we are stretching back out the time it takes to learn the velocity.  By increasing measurement noise, we are telling the Kalman filter to trust the measurements less leading it to learn the state slower.  
 
@@ -77,9 +77,9 @@ For the object tracking application, our primary interest in an accurate state m
 
 A few captures with Q = [1 0][0 100] and R = [1].  In these captures, occlusion starts at time 2 and goes until time 3.  
 
-![Occlusion Down](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Occlusion_Down.JPG)]
+![Occlusion Down](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Occlusion_Down.JPG)
 
-![Occlusion Up](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Occlusion_Up.JPG)]
+![Occlusion Up](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Occlusion_Up.JPG)
 
 What do we notice?  The first thing is that at that when occlusion starts, the noise goes away in the prediction.  This makes sense, because the Kalman filter is simply using its guess at velocity to propograte position into the future.  
 
@@ -88,13 +88,24 @@ The second thing is that in one capture our prediction undershoots truth and on 
 
 ## Varying State in the Kalman Filter
 
-We can break our specific application down into a few distinct stages: acquisiton and following.
+We can break our specific application down into a few distinct stages: acquisiton, locked, and occluded. 
 
-For acquisition, it makes sense to have increased noise in the process noise matrix.  After all, we don't need to model predictions yet because we haven't even found the object we want to model.  The increased noise allows the model to quickly learn the dynamics of the object once we do find it.  
+For acquisition, it makes sense to have increased noise in the process noise matrix.  After all, we don't need to model predictions yet because we haven't even found the object we want to model.  The increased noise allows the model to quickly learn the dynamics of the object once we do find it.  For locked, we then want to decrease the noise in the process noise matrix.  Once we have matched the dynamics of the object, we want to trust our model in case the object becomes occluded.  
 
-For following, we want to decrease the noise in the process noise matrix.  Once we have matched the dynamics of the object, we want to trust our model in case the object becomes occluded.  
+For now, I will leave aside the transition from acquisition to locked (I hard code the change at a point when I know we have matched the system dynamics).  
 
-We may even consider a third state for what to do when we detect full or partial occlusion.
+In the follow example, we use Q = [1 0][0 100] in the acquisition stage and then transition to Q = [1 0][0 1] after we have locked (0.5 second mark in the plot).  As with the previous plots, occlusion starts at 2 seconds.  
+
+![Motion Capture](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Motion_Capture.JPG)
+
+A couple of things are notable. You can see a slight dip in the error graph at 0.5 seconds when we transition process noise states.  The second, is that it handles both noise and occlusion much better since we are trusting our model more.
+
+We are still cheating though by turning noise on part way through the run instead of at the beginning.  Lets add the noise during the entire time and see what happens:
+
+![Motion Capture Entire](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Motion_Capture_Entire_Noise.JPG)
+
+The Kalman filter is really starting to shine.  During the acquisition phase, it followed the noise heavily but also picked up on the strong velocity signal.  At t = 0.5 when we adjusted the process noise, the Kalman filter began trusting the model of the velocity it had established and really began filtering the data.  
+
 
 
                    
