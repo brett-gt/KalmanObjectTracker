@@ -106,7 +106,15 @@ We are still cheating though by turning noise on part way through the run instea
 
 The Kalman filter is really starting to shine.  During the acquisition phase, it followed the noise heavily but also picked up on the strong velocity signal.  At t = 0.5 when we adjusted the process noise, the Kalman filter began trusting the model of the velocity it had established and really began filtering the data.  
 
+## Acceleration
 
+Example so far have been mostly linear.  In object tracking, there will often be acceleration either due to both physics and the optics of the camera in relation to the object.  In my initial use case, I intend to track a ball that will move vertically across the screen (either away from or towards the camera).  Acting on the ball will be friction and optical effects (translation of real world distance to pixels we are measuring changes as the object moves through the frame).  To model this, I am using a log functiion which has rapid acceleration at the beginning slowing as it approaches the asymptote.  
+
+For the sake of space, I am going to also jump straight to having occlusion starting at t = 1.5 - 2.5.  Without occlusion, the model will not how excessive error because the velocity prediction is enough to keep it close and the measurement quickly cancel out the error.  The following captures applies Q = [1 0][0 100] to the log function with occlusion.
+
+![Log Velocity Occlusion](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Log_Velocity_Model_Occlusion.JPG)
+
+Ouch.  Assuming cosntantly velocity is pretty bad if the object is continually decelerating.  Lets add
 
                    
 
