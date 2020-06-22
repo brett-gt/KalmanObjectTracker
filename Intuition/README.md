@@ -98,7 +98,7 @@ In the follow example, we use Q = [1 0][0 100] in the acquisition stage and then
 
 ![Motion Capture](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Motion_Capture.JPG)
 
-A couple of things are notable. You can see a slight dip in the error graph at 0.5 seconds when we transition process noise states.  The second, is that it handles both noise and occlusion much better since we are trusting our model more.
+A couple of things are notable. You can see a slight dip in the error graph at 0.5 seconds when we transition process noise states.  The second, is that it handles both noise and occlusion much better since we are trusting our model more.  No runaway based on the last noise it encountered.
 
 We are still cheating though by turning noise on part way through the run instead of at the beginning.  Lets add the noise during the entire time and see what happens:
 
