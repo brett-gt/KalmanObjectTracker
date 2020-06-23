@@ -110,11 +110,37 @@ The Kalman filter is really starting to shine.  During the acquisition phase, it
 
 Example so far have been mostly linear.  In object tracking, there will often be acceleration either due to both physics and the optics of the camera in relation to the object.  In my initial use case, I intend to track a ball that will move vertically across the screen (either away from or towards the camera).  Acting on the ball will be friction and optical effects (translation of real world distance to pixels we are measuring changes as the object moves through the frame).  To model this, I am using a log functiion which has rapid acceleration at the beginning slowing as it approaches the asymptote.  
 
-For the sake of space, I am going to also jump straight to having occlusion starting at t = 1.5 - 2.5.  Without occlusion, the model will not how excessive error because the velocity prediction is enough to keep it close and the measurement quickly cancel out the error.  The following captures applies Q = [1 0][0 100] to the log function with occlusion.
+For the sake of space, I am going to also jump straight to having occlusion starting at t = 2.0 - 3.0.  Without occlusion, the model will not build excessive error because the velocity prediction is enough to keep it close and the subsequent measurements quickly cancel out the error in the filter.  The following captures applies Q = [1 0][0 100] to the log function with occlusion.
 
 ![Log Velocity Occlusion](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Log_Velocity_Model_Occlusion.JPG)
 
-Ouch.  Assuming cosntantly velocity is pretty bad if the object is continually decelerating.  Lets add
+Ouch.  Assuming constant velocity doesn't work well if the object is continually decelerating.  Let's add some acceleration with Q = [1 0 0][0 100 0][0 0 100].  Note in the following plots the bottom subplot is now acceleration instead of velocity, with blue being "truth" and green being Kalman filter prediction.  To make them more useful, the values are also clipped at 50 and -200.  You can see where they flat line at these values with the actual plots extending well beyond those limits.
+
+![Log Accel 1 100 100](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Log_Accel_1_100_100.JPG)
+
+Adding acceleration helped but you can see when occlusion happens we stop updating the acceleration value (constant acceleration after all).  During this period, we continue slow down faster than the actual plot, leading to us undershooting truth.
+
+Can we tune away this undershoot?  Yes.  Trying Q = [1 0 0][0 100 0][0 0 50].  
+
+![Log Accel 1 100 50](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Log_Accel_1_100_50.JPG)
+
+Good performance, but there is a problem you can see in the acceleration plot.  We haven't really matched the acceleration which is what we want to do.  Instead, we just got lucky and moved the two plots so that they intersect about when occlusion starts.  I bet if we move occlusion, we don't get good performance.  The plot below has occlusion moved to t = 3.0 - 4.0.
+
+![Log Accel Occlusion Move](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Log_Accel_Occlusion_Move.JPG)
+
+Suspicion confirmed.  We tuned the filter for a single case and not a general improvement.  Instead, we want to try to improve how well we match the acceleration curve overall.  Going back to our original level, we can crank the acceleration noise way up.  Q = [1 0 0][0 100 0][0 0 10000]:
+
+![Log Accel 1 100 10000](https://github.com/brett-gt/KalmanObjectTracker/blob/master/Intuition/Images/Log_Accel_1_100_10000.JPG)
+
+Next to try: modeling the log function in the state transition matrix.
+
+
+
+
+
+
+
+
 
                    
 
